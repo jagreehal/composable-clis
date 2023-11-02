@@ -1,0 +1,30 @@
+{
+	"name": "composable-command-line-interfaces",
+	"version": "1.0.0",
+	"main": "./bin/index.js",
+	"private": true,
+	"license": "MIT",
+	"scripts": {
+		"dev": "tsx src/index.ts",
+		"build": "tsup src/index.ts --format cjs --dts --outDir bin",
+		"lint": "eslint",
+		"lint:fix": "eslint . --fix",
+		"start": "node bin/index.js",
+		"test": "npm run build && vitest run"
+	},
+	"bin": {
+		"commander-example": "./bin/index.js"
+	},
+	"dependencies": {
+		"commander": "^11.1.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.8.10",
+		"eslint-config-jag-nodejs": "^1.0.0",
+		"prettier": "^3.0.3",
+		"tsup": "^7.2.0",
+		"tsx": "^3.14.0",
+		"typescript": "^5.2.2",
+		"vitest": "^0.34.6"
+	}
+}

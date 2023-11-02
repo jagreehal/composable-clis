@@ -1,0 +1,6 @@
+{
+  "extends": "jagreehal",
+  "rules": {
+    "no-console": 0
+  }
+}

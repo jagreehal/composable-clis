@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "bin",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "noEmitOnError": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "types": ["node"],
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "e2e"],
+  "exclude": ["node_modules", "dist", "bin"]
+}
