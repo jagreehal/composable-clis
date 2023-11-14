@@ -91,26 +91,101 @@ subtract 9 4
 
 which outputs `5`
 
-## Composing add and subtract commands into a calc command
+## Composing commands manually
+
+To compose commands manually, we simply add them to the program:
 
 ```typescript
+#!/usr/bin/env node
+
+import { Command } from 'commander';
+import { addCommand } from './commands/addCommand';
+import { multiplyCommand } from './commands/multiplyCommand';
+import { subtractCommand } from './commands/subtractCommand';
+import { divideCommand } from './commands/divideCommand';
+
+const program = new Command();
+program.addCommand(addCommand);
+program.addCommand(multiplyCommand);
+program.addCommand(subtractCommand);
+program.addCommand(divideCommand);
+
+// Show help if no arguments
+if (process.argv.length <= 2) {
+	program.outputHelp();
+} else {
+	program.parse(process.argv);
+}
+```
+
+## Composing using open closed principle
+
+The Open/Closed Principle, a fundamental concept in software engineering, states that software entities (like classes, modules, functions, etc.) should be open for extension but closed for modification.
+
+Authors can extend the behaviour of a module without altering its source code, which is particularly beneficial in maintaining and scaling complex systems like CLIs.
+
+By adopting this principle, we can compose our commands in a way that allows easy addition of new functionality without changing existing code.s
+
+This is efficient and reduces the risk of introducing bugs into the existing system.
+
+Instead of adding commands one by one, we utilize the Open/Closed principle to compose commands dynamically:
+
+```typescript
+#!/usr/bin/env node
+
+import { Command } from 'commander';
+import * as commands from './commands';
+
+const program = new Command();
+for (const key in commands) {
+	program.addCommand(commands[key]);
+}
+
+// Show help if no arguments
+if (process.argv.length <= 2) {
+	program.outputHelp();
+} else {
+	program.parse(process.argv);
+}
+```
+
+## Composing commands into a calc command
+
+The `calc` command is a prime example of the power of composability in CLI tools.
+
+By composing the functionality of `add`, `subtract`, `divide` and `multiply` commands, `calc` is a versatile and user-friendly interface for various arithmetic operations.
+
+This streamlines the user experience by providing a single entry point for multiple operations and demonstrates the ease of extending functionality in a modular CLI design.
+
+```typescript
+import { Command } from 'commander';
+import * as commands from './commands';
+
 const calcCommand = new Command('calc')
-	.description('Perform add and subtract operations')
-	.addCommand(addCommand)
-	.addCommand(subtractCommand)
+	.description('Perform operations on all input numbers')
 	.addHelpText(
 		'after',
 		`
     Example:
-      calc add 1 2 3
+      calc add 5 6 7
+      calc multiply 2 3 4
       calc subtract 9 4
+      calc divide 8 2
     `,
 	);
 
-const program = new Command();
-program.addCommand(addCommand);
-program.addCommand(subtractCommand);
-program.addCommand(calcCommand);
+for (const key in commands) {
+	calcCommand.addCommand(commands[key]);
+}
+
+const program = new Command().addCommand(calcCommand);
+
+// Show help if no arguments
+if (process.argv.length <= 2) {
+	program.outputHelp();
+} else {
+	program.parse(process.argv);
+}
 ```
 
 To use the calc command, simply type:

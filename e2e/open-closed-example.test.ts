@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 import { join } from 'path';
 
 function runCommand(command: string): string {
-	const cliPath = join(process.cwd(), 'bin/index.js');
+	const cliPath = join(process.cwd(), 'bin/open-closed-example.js');
 	try {
 		return execSync(`node ${cliPath} ${command}`).toString().trim();
 	} catch (error) {
@@ -13,7 +13,7 @@ function runCommand(command: string): string {
 	}
 }
 
-describe('Calculator CLI', () => {
+describe('open-closed-example tests', () => {
 	describe('add', () => {
 		test('add command should correctly sum numbers', () => {
 			const result = runCommand('add 1 2 3');
